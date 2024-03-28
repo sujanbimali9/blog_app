@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:blog_app/core/theme/theme.dart';
 import 'package:blog_app/feature/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blog_app/feature/auth/presentation/init_dependency.dart';
@@ -18,8 +20,19 @@ Future<void> main() async {
   ));
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<AuthBloc>().add(AuthLoggedIn());
+  }
 
   @override
   Widget build(BuildContext context) {

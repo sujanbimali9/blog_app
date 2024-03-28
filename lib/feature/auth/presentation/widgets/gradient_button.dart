@@ -2,9 +2,11 @@ import 'package:blog_app/core/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
 
 class GradientButton extends StatelessWidget {
-  const GradientButton({super.key, required this.onPressed});
+  const GradientButton(
+      {super.key, required this.onPressed, required this.text});
 
   final VoidCallback onPressed;
+  final String text;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,12 +25,12 @@ class GradientButton extends StatelessWidget {
           foregroundColor: AppPallete.transparentColor,
           shadowColor: AppPallete.transparentColor,
           backgroundColor: AppPallete.transparentColor,
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(6))),
         ),
-        child: const Text(
-          "Sign Up",
-          style: TextStyle(color: Colors.white54),
+        child: Text(
+          text,
+          style: const TextStyle(color: Colors.white54),
         ),
       ),
     );

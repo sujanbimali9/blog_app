@@ -74,14 +74,16 @@ class _SignInScreenState extends State<SignInScreen> {
                     formKey: formkey,
                   ),
                   const SizedBox(height: 20),
-                  GradientButton(onPressed: () {
-                    if (formkey.currentState!.validate()) {
-                      context.read<AuthBloc>().add(AuthSignUp(
-                          email: emailController.text.trim(),
-                          name: nameController.text.trim(),
-                          password: passwordController.text.trim()));
-                    }
-                  }),
+                  GradientButton(
+                      text: "Sign Up",
+                      onPressed: () {
+                        if (formkey.currentState!.validate()) {
+                          context.read<AuthBloc>().add(AuthSignUp(
+                              email: emailController.text.trim(),
+                              name: nameController.text.trim(),
+                              password: passwordController.text.trim()));
+                        }
+                      }),
                   const SizedBox(height: 10),
                   RichText(
                     text: TextSpan(
