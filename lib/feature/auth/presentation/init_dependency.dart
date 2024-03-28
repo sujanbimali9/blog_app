@@ -1,7 +1,7 @@
 import 'package:blog_app/core/keys/supabase.dart';
 import 'package:blog_app/feature/auth/data/datasource/auth_remote_data_source.dart';
 import 'package:blog_app/feature/auth/data/repository/auth_repository_implement.dart';
-import 'package:blog_app/feature/auth/domain/usercases/signup.dart';
+import 'package:blog_app/feature/auth/domain/usercases/usersignup.dart';
 import 'package:blog_app/feature/auth/presentation/bloc/auth_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -12,9 +12,8 @@ Future<void> initDependencies() async {
     url: SupabaseKey.supabaseUrl,
     anonKey: SupabaseKey.supabaseAnonKey,
   );
+  serviceLocater.registerLazySingleton(() => supabase.client);
   _initAuth();
-
-  serviceLocater.registerSingleton(() => supabase.client);
 }
 
 void _initAuth() {
@@ -35,4 +34,6 @@ void _initAuth() {
   );
   serviceLocater
       .registerSingleton(AuthBloc(userSignUp: serviceLocater<UserSignUp>()));
+  // serviceLocater
+  // .registerSingleton(AuthBloc(userSignUp: serviceLocater<UserSignIn>()));
 }

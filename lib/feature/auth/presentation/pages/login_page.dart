@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ..onTap = () => GoRouter.of(context).go('/signup'),
                   text: "Sign In",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppPallete.gradient2, fontWeight: FontWeight.bold),
+                      color: AppPallete.gradient, fontWeight: FontWeight.bold),
                 ),
               ],
             ),

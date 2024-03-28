@@ -19,10 +19,13 @@ class GradientButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-            fixedSize: const Size(400, 60),
-            foregroundColor: AppPallete.transparentColor,
-            shadowColor: AppPallete.transparentColor,
-            backgroundColor: AppPallete.transparentColor),
+          fixedSize: const Size(400, 60),
+          foregroundColor: AppPallete.transparentColor,
+          shadowColor: AppPallete.transparentColor,
+          backgroundColor: AppPallete.transparentColor,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(6))),
+        ),
         child: const Text(
           "Sign Up",
           style: TextStyle(color: Colors.white54),
