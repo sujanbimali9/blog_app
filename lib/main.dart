@@ -1,8 +1,8 @@
-import 'dart:developer';
-
+import 'package:blog_app/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:blog_app/core/theme/theme.dart';
 import 'package:blog_app/feature/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blog_app/feature/auth/presentation/init_dependency.dart';
+import 'package:blog_app/feature/home/presentation/bloc/blog_bloc.dart';
 import 'package:blog_app/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,8 +13,14 @@ Future<void> main() async {
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(
+        create: (_) => serviceLocater<AppUserCubit>(),
+      ),
+      BlocProvider(
         create: (_) => serviceLocater<AuthBloc>(),
-      )
+      ),
+      BlocProvider(
+        create: (_) => serviceLocater<BlogBloc>(),
+      ),
     ],
     child: const MainApp(),
   ));
@@ -39,7 +45,9 @@ class _MainAppState extends State<MainApp> {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkThemeMode,
-      routerConfig: AllRoutes.router,
+      routerDelegate: AllRoutes.router.routerDelegate,
+      routeInformationParser: AllRoutes.router.routeInformationParser,
+      routeInformationProvider: AllRoutes.router.routeInformationProvider,
     );
   }
 }
