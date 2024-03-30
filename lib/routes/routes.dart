@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:blog_app/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:blog_app/feature/auth/presentation/pages/signin_page.dart';
 import 'package:blog_app/feature/home/presentation/pages/add_blog.dart';
@@ -29,6 +27,10 @@ class AllRoutes {
         builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
+        path: '/home',
+        builder: (context, state) => const HomePage(),
+      ),
+      GoRoute(
         path: '/signup',
         builder: (context, state) => const SignInScreen(),
       ),
@@ -43,8 +45,6 @@ class AllRoutes {
 class Goto {
   static String login = '/login';
   static String signup = '/signup';
-
   static String home = '/home';
-
   static String addblog = '/addblog';
 }

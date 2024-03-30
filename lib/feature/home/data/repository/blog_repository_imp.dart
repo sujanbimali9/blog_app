@@ -32,9 +32,20 @@ class BlogRepositoryImp implements BlogRepository {
         userId,
         topics,
         DateTime.now(),
+        null,
       );
       final model = await blogRemoteDataSource.uploadBlog(blogModel);
       return right(model);
+    } on ServerException catch (e) {
+      return left(Failure(error: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Blog>>> getAllBlog() async {
+    try {
+      final blog = await blogRemoteDataSource.getAllBLog();
+      return right(blog);
     } on ServerException catch (e) {
       return left(Failure(error: e.message));
     }

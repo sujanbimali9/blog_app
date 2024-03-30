@@ -1,17 +1,8 @@
-import 'dart:convert';
-
 import 'package:blog_app/feature/home/domain/entities/blog.dart';
 
 class BlogModel extends Blog {
-  BlogModel(
-    super.id,
-    super.title,
-    super.content,
-    super.imageUrl,
-    super.userId,
-    super.topics,
-    super.updatedAt,
-  );
+  BlogModel(super.id, super.title, super.content, super.imageUrl, super.userId,
+      super.topics, super.updatedAt, super.userName);
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,
@@ -19,8 +10,8 @@ class BlogModel extends Blog {
       'user_id': userId,
       'image_url': imageUrl,
       'content': content,
-      'topics': topics,
-      'updated_at': updatedAt.millisecondsSinceEpoch,
+      'topic': topics,
+      'updated_at': updatedAt.toIso8601String(),
     };
   }
 
@@ -31,10 +22,11 @@ class BlogModel extends Blog {
       map['user_id'] as String,
       map['image_url'] as String,
       map['content'] as String,
-      List<String>.from((map['topics'] ?? [])),
+      List<String>.from((map['topic'] ?? [])),
       map['updated_at'] == null
           ? DateTime.now()
-          : DateTime.fromMillisecondsSinceEpoch(map['updated_at'] as int),
+          : DateTime.parse(map['updated_at']),
+      map['profiles']['name'],
     );
   }
 }
