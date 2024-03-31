@@ -5,7 +5,7 @@ import 'package:blog_app/feature/home/domain/entities/blog.dart';
 import 'package:fpdart/fpdart.dart';
 
 abstract interface class BlogRepository {
-  Future<Either<Failure, Blog>> uploadBlog(
+  Future<Either<Failure, void>> uploadBlog(
       {required File file,
       required String title,
       required String content,

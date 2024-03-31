@@ -14,23 +14,37 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  late final ScrollController _scrollController;
+
   @override
   void initState() {
+    _scrollController = ScrollController();
     context.read<BlogBloc>().add(AllBlog());
     super.initState();
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text("Blog"),
         actions: [
           IconButton(
-              onPressed: () {
-                GoRouter.of(context).go('');
-                context.go(Goto.addblog);
+              onPressed: () async {
+                await context.push(Goto.addblog);
               },
               icon: const Icon(Icons.add_circle))
         ],
@@ -44,17 +58,18 @@ class _HomePageState extends State<HomePage> {
         builder: (context, state) {
           if (state is Loading) {}
           if (state is BlogDisplaySuccess) {
-            return Scrollbar(
-              child: ListView.builder(
-                itemCount: state.blog.length,
-                itemBuilder: (context, index) {
-                  final blog = state.blog[index];
-                  return BlogCard(
-                    blog: blog,
-                    onTap: () {},
-                  );
-                },
-              ),
+            return ListView.builder(
+              shrinkWrap: true,
+              controller: _scrollController,
+              physics: const BouncingScrollPhysics(),
+              itemCount: state.blog.length,
+              itemBuilder: (context, index) {
+                final blog = state.blog[index];
+                return BlogCard(
+                  blog: blog,
+                  onTap: () {},
+                );
+              },
             );
           }
           return const SizedBox();

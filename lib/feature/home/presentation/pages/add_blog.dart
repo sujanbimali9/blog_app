@@ -5,7 +5,6 @@ import 'package:blog_app/core/common/widget/loader.dart';
 import 'package:blog_app/core/theme/app_pallete.dart';
 import 'package:blog_app/core/utils/pickimage.dart';
 import 'package:blog_app/core/utils/snackbar.dart';
-import 'package:blog_app/feature/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blog_app/feature/home/data/filter.dart';
 import 'package:blog_app/feature/home/presentation/bloc/blog_bloc.dart';
 import 'package:blog_app/feature/home/presentation/widget/blog_editor.dart';
@@ -75,6 +74,13 @@ class _AddBlogState extends State<AddBlog> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Blog'),
+        leading: IconButton(
+            onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              }
+            },
+            icon: const Icon(Icons.arrow_back_ios_new_rounded)),
         centerTitle: true,
         actions: [
           IconButton(
@@ -145,7 +151,7 @@ class _AddBlogState extends State<AddBlog> {
                             height: 20,
                           ),
                           SizedBox(
-                            height: 50,
+                            height: 70,
                             child: ListView.builder(
                               shrinkWrap: true,
                               scrollDirection: Axis.horizontal,
@@ -183,9 +189,6 @@ class _AddBlogState extends State<AddBlog> {
                                 );
                               },
                             ),
-                          ),
-                          const SizedBox(
-                            height: 20,
                           ),
                           const SizedBox(
                             height: 20,

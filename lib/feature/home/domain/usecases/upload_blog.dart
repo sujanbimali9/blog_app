@@ -2,17 +2,16 @@ import 'dart:io';
 
 import 'package:blog_app/core/error/failure.dart';
 import 'package:blog_app/core/usecase/usecase.dart';
-import 'package:blog_app/feature/home/domain/entities/blog.dart';
 import 'package:blog_app/feature/home/domain/repository/blog_repository.dart';
 import 'package:fpdart/fpdart.dart';
 
-class UploadBlog implements UseCase<Blog, UploadBlogParms> {
+class UploadBlog implements UseCase<void, UploadBlogParms> {
   final BlogRepository blogRepository;
 
   UploadBlog({required this.blogRepository});
 
   @override
-  Future<Either<Failure, Blog>> call(UploadBlogParms parms) async {
+  Future<Either<Failure, void>> call(UploadBlogParms parms) async {
     return await blogRepository.uploadBlog(
       file: parms.file,
       title: parms.title,

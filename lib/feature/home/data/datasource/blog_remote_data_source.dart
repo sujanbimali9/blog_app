@@ -6,7 +6,7 @@ import 'package:blog_app/feature/home/data/model/blog_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class BlogRemoteDataSource {
-  Future<BlogModel> uploadBlog(BlogModel blog);
+  Future<void> uploadBlog(BlogModel blog);
   Future<String> uploadBlogImage({required File file, required String uuid});
   Future<List<BlogModel>> getAllBLog();
 }
@@ -17,12 +17,14 @@ class BlogRemoteDataSourceimpl implements BlogRemoteDataSource {
   BlogRemoteDataSourceimpl({required SupabaseClient supabaseClient})
       : _supabaseClient = supabaseClient;
   @override
-  Future<BlogModel> uploadBlog(BlogModel blog) async {
+  Future<void> uploadBlog(BlogModel blog) async {
     try {
       final blogData =
           await _supabaseClient.from('blogs').insert(blog.toJson()).select();
-      return BlogModel.fromJson(blogData.first);
+      print(blogData.first);
+      return;
     } catch (e) {
+      log(e.toString());
       throw ServerException(message: e.toString());
     }
   }
@@ -32,7 +34,6 @@ class BlogRemoteDataSourceimpl implements BlogRemoteDataSource {
       {required File file, required String uuid}) async {
     try {
       await _supabaseClient.storage.from('blogimage').upload(uuid, file);
-      log(_supabaseClient.storage.from('blogimage').getPublicUrl(uuid));
       return _supabaseClient.storage.from('blogimage').getPublicUrl(uuid);
     } catch (e) {
       throw ServerException(message: e.toString());

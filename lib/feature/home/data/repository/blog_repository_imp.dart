@@ -14,7 +14,7 @@ class BlogRepositoryImp implements BlogRepository {
 
   BlogRepositoryImp({required this.blogRemoteDataSource});
   @override
-  Future<Either<Failure, Blog>> uploadBlog(
+  Future<Either<Failure, void>> uploadBlog(
       {required File file,
       required String title,
       required String content,
@@ -25,14 +25,14 @@ class BlogRepositoryImp implements BlogRepository {
       final String imageurl =
           await blogRemoteDataSource.uploadBlogImage(file: file, uuid: uuid);
       BlogModel blogModel = BlogModel(
-        uuid,
-        title,
-        content,
-        imageurl,
-        userId,
-        topics,
-        DateTime.now(),
-        null,
+        id: uuid,
+        title: title,
+        content: content,
+        imageUrl: imageurl,
+        userId: userId,
+        topic: topics,
+        updatedAt: DateTime.now(),
+        userName: null,
       );
       final model = await blogRemoteDataSource.uploadBlog(blogModel);
       return right(model);

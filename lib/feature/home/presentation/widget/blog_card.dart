@@ -1,8 +1,8 @@
 import 'dart:ui';
 
+import 'package:blog_app/core/theme/app_pallete.dart';
 import 'package:blog_app/feature/home/domain/entities/blog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class BlogCard extends StatelessWidget {
   final Blog blog;
@@ -11,73 +11,83 @@ class BlogCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 300,
-      child: Card(
-        margin: const EdgeInsets.all(20),
-        elevation: 0,
-        child: GestureDetector(
-          onTap: onTap,
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(20)),
-            child: LayoutBuilder(builder: (context, constraint) {
-              return Stack(
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          child: LayoutBuilder(builder: (context, constraint) {
+            return SizedBox(
+              child: Stack(
                 children: [
-                  BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                  SizedBox(
+                    height: 250,
+                    width: double.infinity,
                     child: Image.network(
                       blog.imageUrl,
                       filterQuality: FilterQuality.high,
-                      alignment: const FractionalOffset(1, 1),
                       fit: BoxFit.cover,
                     ),
                   ),
                   Positioned(
                     top: 0,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: blog.topics
-                                .map(
-                                  (e) => Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
-                                    child: Chip(
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20))),
-                                      label: Text(e),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                      child: Container(
+                        height: 250,
+                        color: Colors.black12,
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: blog.topic
+                                  .map(
+                                    (e) => Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: Chip(
+                                        color: const MaterialStatePropertyAll<
+                                                Color>(
+                                            Color.fromARGB(255, 233, 248, 233)),
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20))),
+                                        label: Text(
+                                          e,
+                                          style: TextStyle(color: Colors.green),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: SizedBox(
-                              width: constraint.maxWidth - 36,
-                              child: Text(
-                                blog.title,
-                                style: const TextStyle(
+                                  )
+                                  .toList(),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: SizedBox(
+                                width: constraint.maxWidth - 36,
+                                child: Text(
+                                  blog.title,
+                                  style: const TextStyle(
                                     fontSize: 40,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400),
+                                    color: Color.fromARGB(255, 200, 212, 197),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ],
-              );
-            }),
-          ),
+              ),
+            );
+          }),
         ),
       ),
     );
