@@ -5,28 +5,40 @@ class BlogEditor extends StatelessWidget {
       {super.key,
       required this.hint,
       required this.controller,
-      required this.type});
+      required this.type,
+      required this.formKey});
   final String hint;
+  final GlobalKey<FormState> formKey;
   final TextEditingController controller;
   final BlogEditorType type;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      validator: (value) {
-        if (value!.trim().isEmpty) {
-          return "$hint is missing";
-        }
+    return Form(
+      key: formKey,
+      child: TextFormField(
+        onFieldSubmitted: (value) => formKey.currentState!.validate(),
+        onEditingComplete: () => formKey.currentState!.validate(),
+        onSaved: (newValue) => formKey.currentState!.validate(),
+        onTapOutside: (event) {
+          formKey.currentState!.validate();
+          FocusScope.of(context).unfocus();
+        },
+        validator: (value) {
+          if (value!.trim().isEmpty) {
+            return "$hint is missing";
+          }
 
-        return null;
-      },
-      controller: controller,
-      decoration: InputDecoration(
-        hintText: hint,
-        isDense: true,
+          return null;
+        },
+        controller: controller,
+        decoration: InputDecoration(
+          hintText: hint,
+          isDense: true,
+        ),
+        expands: false,
+        maxLines: type == BlogEditorType.title ? 1 : null,
       ),
-      expands: false,
-      maxLines: type == BlogEditorType.title ? 1 : null,
     );
   }
 }

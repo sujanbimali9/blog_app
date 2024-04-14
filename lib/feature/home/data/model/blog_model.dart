@@ -34,7 +34,7 @@ class BlogModel extends Blog {
       updatedAt: map['updated_at'] == null
           ? DateTime.now()
           : DateTime.parse(map['updated_at']),
-      userName: "map['profiles']['name']",
+      userName: map['profiles']['name'],
     );
   }
 }

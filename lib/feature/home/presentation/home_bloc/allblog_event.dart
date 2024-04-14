@@ -1,9 +1,9 @@
-part of 'blog_bloc.dart';
+part of 'allblog_bloc.dart';
 
 @immutable
-sealed class BlogEvent {}
+sealed class AllBlogEvent {}
 
-final class BlogUpload extends BlogEvent {
+final class BlogUpload extends AllBlogEvent {
   final String userId;
   final String title;
   final String content;
@@ -18,4 +18,4 @@ final class BlogUpload extends BlogEvent {
       required this.topics});
 }
 
-final class AllBlog extends BlogEvent {}
+final class AllBlog extends AllBlogEvent {}

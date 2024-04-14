@@ -33,83 +33,89 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state is AuthFailure) {
-          showSnackBar(context: context, message: state.message);
-        }
-      },
-      builder: (context, state) {
-        if (state is AuthLoading) {
-          return const Loading();
-        } else {
-          return Form(
-            key: formkey,
-            child: SafeArea(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Login",
-                      style:
-                          TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    AuthField(
-                      hint: "Email",
-                      controller: emailController,
-                      formKey: formkey,
-                    ),
-                    AuthField(
-                      hint: "Password",
-                      isPassword: true,
-                      controller: passwordController,
-                      formKey: formkey,
-                    ),
-                    const SizedBox(height: 20),
-                    GradientButton(
-                        text: 'Login',
-                        onPressed: () {
-                          if (formkey.currentState!.validate()) {
-                            context.read<AuthBloc>().add(AuthSignIn(
-                                email: emailController.text.trim(),
-                                password: passwordController.text.trim()));
-                          }
-                        }),
-                    const SizedBox(height: 10),
-                    RichText(
-                      text: TextSpan(
-                        text: "Don't have an account? ",
-                        style: Theme.of(context).textTheme.titleMedium,
-                        children: [
-                          TextSpan(
-                            mouseCursor: SystemMouseCursors.click,
-                            recognizer: TapGestureRecognizer()
-                              ..onTap =
-                                  () => GoRouter.of(context).go(Goto.signup),
-                            text: "Login",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                    color: AppPallete.gradient,
-                                    fontWeight: FontWeight.bold),
+      body: BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is AuthFailure && state.message != "User not loggedIn") {
+            state.message.contains("Invalid login credentials")
+                ? showSnackBar(
+                    context: context, message: "Invalid Password or Username")
+                : showSnackBar(context: context, message: state.message);
+          }
+        },
+        builder: (context, state) {
+          if (state is AuthLoading) {
+            return const Loading();
+          } else {
+            return Form(
+              key: formkey,
+              child: SafeArea(
+                child: Center(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Login",
+                          style: TextStyle(
+                              fontSize: 50, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        AuthField(
+                          hint: "Email",
+                          controller: emailController,
+                          formKey: formkey,
+                        ),
+                        AuthField(
+                          hint: "Password",
+                          isPassword: true,
+                          controller: passwordController,
+                          formKey: formkey,
+                        ),
+                        const SizedBox(height: 20),
+                        GradientButton(
+                            text: 'Login',
+                            onPressed: () {
+                              if (formkey.currentState!.validate()) {
+                                context.read<AuthBloc>().add(AuthSignIn(
+                                    email: emailController.text.trim(),
+                                    password: passwordController.text.trim()));
+                              }
+                            }),
+                        const SizedBox(height: 10),
+                        RichText(
+                          text: TextSpan(
+                            text: "Don't have an account? ",
+                            style: Theme.of(context).textTheme.titleMedium,
+                            children: [
+                              TextSpan(
+                                mouseCursor: SystemMouseCursors.click,
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () =>
+                                      GoRouter.of(context).go(Goto.signup),
+                                text: "Login",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                        color: AppPallete.gradient,
+                                        fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          );
-        }
-      },
-    ));
+            );
+          }
+        },
+      ),
+    );
   }
 }

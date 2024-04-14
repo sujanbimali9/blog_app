@@ -19,10 +19,14 @@ class AuthRepositoryImpl implements AuthRepository {
       if (user != null) {
         return right(user);
       } else {
-        return left(Failure(error: "User not logged in"));
+        return left(
+          Failure(error: "User not loggedIn"),
+        );
       }
     } on ServerException catch (e) {
-      return left(Failure(error: e.message));
+      return left(
+        Failure(error: e.message),
+      );
     }
   }
 
@@ -30,10 +34,11 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, User>> signInWithEmailAndPassword(
       {required String email, required String password}) async {
     return _getUser(
-        () async => await remoteDataSource.signInWithEmailAndPassword(
-              email: email,
-              password: password,
-            ));
+      () async => await remoteDataSource.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      ),
+    );
   }
 
   @override
@@ -42,11 +47,12 @@ class AuthRepositoryImpl implements AuthRepository {
       required String name,
       required String password}) async {
     return _getUser(
-        () async => await remoteDataSource.signUpWithEmailAndPassword(
-              email: email,
-              name: name,
-              password: password,
-            ));
+      () async => await remoteDataSource.signUpWithEmailAndPassword(
+        email: email,
+        name: name,
+        password: password,
+      ),
+    );
   }
 
   Future<Either<Failure, User>> _getUser(
@@ -55,9 +61,13 @@ class AuthRepositoryImpl implements AuthRepository {
       final User userid = await fn();
       return right(userid);
     } on supabase.AuthException catch (e) {
-      return left(Failure(error: e.message));
+      return left(
+        Failure(error: e.message),
+      );
     } on ServerException catch (e) {
-      return left(Failure(error: e.message));
+      return left(
+        Failure(error: e.message),
+      );
     }
   }
 }

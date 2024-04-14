@@ -2,6 +2,7 @@ import 'package:blog_app/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:blog_app/feature/auth/presentation/pages/signin_page.dart';
 import 'package:blog_app/feature/home/presentation/pages/add_blog.dart';
 import 'package:blog_app/feature/home/presentation/pages/blog_home.dart';
+import 'package:blog_app/feature/home/presentation/pages/blog_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -38,6 +39,13 @@ class AllRoutes {
         path: '/addblog',
         builder: (context, state) => const AddBlog(),
       ),
+      GoRoute(
+        path: '/blogview/:id',
+        builder: (context, state) {
+          final id = state.pathParameters['id'];
+          return BlogView(id: id!);
+        },
+      ),
     ],
   );
 }
@@ -47,4 +55,5 @@ class Goto {
   static String signup = '/signup';
   static String home = '/home';
   static String addblog = '/addblog';
+  static String blogView = '/blogview';
 }

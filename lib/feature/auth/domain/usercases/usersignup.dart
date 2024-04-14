@@ -24,23 +24,3 @@ class UserSignUpParams {
   UserSignUpParams(
       {required this.name, required this.email, required this.password});
 }
-
-class UserSignIn implements UseCase<User, UserSignInParams> {
-  final AuthRepository _authRepository;
-
-  UserSignIn({required AuthRepository authRepository})
-      : _authRepository = authRepository;
-
-  @override
-  Future<Either<Failure, User>> call(UserSignInParams parms) async {
-    return await _authRepository.signInWithEmailAndPassword(
-        email: parms.email, password: parms.password);
-  }
-}
-
-class UserSignInParams {
-  final String email;
-  final String password;
-
-  UserSignInParams({required this.email, required this.password});
-}

@@ -1,8 +1,11 @@
 import 'dart:ui';
 
 import 'package:blog_app/core/theme/app_pallete.dart';
+import 'package:blog_app/core/utils/calculate_readtime.dart';
 import 'package:blog_app/feature/home/domain/entities/blog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class BlogCard extends StatelessWidget {
   final Blog blog;
@@ -21,69 +24,75 @@ class BlogCard extends StatelessWidget {
             return SizedBox(
               child: Stack(
                 children: [
-                  SizedBox(
-                    height: 250,
-                    width: double.infinity,
-                    child: Image.network(
-                      blog.imageUrl,
+                  ImageFiltered(
+                    imageFilter: ImageFilter.blur(sigmaX: 1.5, sigmaY: 2),
+                    child: CachedNetworkImage(
+                      imageUrl: blog.imageUrl,
+                      width: constraint.maxWidth,
+                      height: 210,
+                      placeholder: (context, url) => Container(
+                        color: const Color.fromARGB(66, 112, 112, 112),
+                      ),
                       filterQuality: FilterQuality.high,
                       fit: BoxFit.cover,
                     ),
                   ),
                   Positioned(
                     top: 0,
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                      child: Container(
-                        height: 250,
-                        color: Colors.black12,
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: blog.topic
-                                  .map(
-                                    (e) => Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0),
-                                      child: Chip(
-                                        color: const MaterialStatePropertyAll<
-                                                Color>(
-                                            Color.fromARGB(255, 233, 248, 233)),
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20))),
-                                        label: Text(
-                                          e,
-                                          style: TextStyle(color: Colors.green),
-                                        ),
+                    child: Container(
+                      height: 210,
+                      width: constraint.maxWidth,
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: blog.topic
+                                .map(
+                                  (e) => Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: Chip(
+                                      color:
+                                          const MaterialStatePropertyAll<Color>(
+                                              AppPallete.chipColor),
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20))),
+                                      label: Text(
+                                        e,
+                                        style: const TextStyle(
+                                            color: Colors.green),
                                       ),
                                     ),
-                                  )
-                                  .toList(),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: SizedBox(
-                                width: constraint.maxWidth - 36,
-                                child: Text(
-                                  blog.title,
-                                  style: const TextStyle(
-                                    fontSize: 40,
-                                    color: Color.fromARGB(255, 200, 212, 197),
-                                    fontWeight: FontWeight.w500,
                                   ),
+                                )
+                                .toList(),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: SizedBox(
+                              width: constraint.maxWidth - 36,
+                              child: Text(
+                                blog.title,
+                                style: const TextStyle(
+                                  fontSize: 40,
+                                  color: Color.fromARGB(255, 200, 212, 197),
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
+                  Positioned(
+                      bottom: 10,
+                      left: 10,
+                      child: Text(calculateReadingTime(blog.content))),
                 ],
               ),
             );

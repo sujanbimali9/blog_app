@@ -9,6 +9,7 @@ abstract interface class BlogRemoteDataSource {
   Future<void> uploadBlog(BlogModel blog);
   Future<String> uploadBlogImage({required File file, required String uuid});
   Future<List<BlogModel>> getAllBLog();
+  Future<BlogModel> getBlog(String id);
 }
 
 class BlogRemoteDataSourceimpl implements BlogRemoteDataSource {
@@ -19,9 +20,7 @@ class BlogRemoteDataSourceimpl implements BlogRemoteDataSource {
   @override
   Future<void> uploadBlog(BlogModel blog) async {
     try {
-      final blogData =
-          await _supabaseClient.from('blogs').insert(blog.toJson()).select();
-      print(blogData.first);
+      await _supabaseClient.from('blogs').insert(blog.toJson()).select();
       return;
     } catch (e) {
       log(e.toString());
@@ -50,6 +49,19 @@ class BlogRemoteDataSourceimpl implements BlogRemoteDataSource {
       throw ServerException(
         message: e.toString(),
       );
+    }
+  }
+
+  @override
+  Future<BlogModel> getBlog(String id) async {
+    try {
+      final blog = await _supabaseClient
+          .from('blogs')
+          .select('*,profiles(name)')
+          .eq('id', id);
+      return BlogModel.fromJson(blog.first);
+    } catch (e) {
+      throw ServerException(message: e.toString());
     }
   }
 }

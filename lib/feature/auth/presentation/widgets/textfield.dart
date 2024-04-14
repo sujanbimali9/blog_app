@@ -18,6 +18,7 @@ class AuthField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         obscureText: isPassword,
+        onTapOutside: (event) {},
         decoration: InputDecoration(
           hintText: hint,
         ),

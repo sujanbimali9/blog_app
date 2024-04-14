@@ -12,12 +12,13 @@ class GradientButton extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15),
       decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          gradient: LinearGradient(
-            colors: [AppPallete.gradient1, AppPallete.gradient2],
-            begin: Alignment.bottomLeft,
-            end: Alignment.bottomRight,
-          )),
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+        gradient: LinearGradient(
+          colors: [AppPallete.gradient1, AppPallete.gradient2],
+          begin: Alignment.bottomLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(

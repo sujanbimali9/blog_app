@@ -3,14 +3,17 @@ import 'package:blog_app/core/keys/supabase.dart';
 import 'package:blog_app/feature/auth/data/datasource/auth_remote_data_source.dart';
 import 'package:blog_app/feature/auth/data/repository/auth_repository_implement.dart';
 import 'package:blog_app/feature/auth/domain/usercases/currentuser.dart';
+import 'package:blog_app/feature/auth/domain/usercases/usersignin.dart';
 import 'package:blog_app/feature/auth/domain/usercases/usersignup.dart';
 import 'package:blog_app/feature/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blog_app/feature/home/data/datasource/blog_remote_data_source.dart';
 import 'package:blog_app/feature/home/data/repository/blog_repository_imp.dart';
 import 'package:blog_app/feature/home/domain/repository/blog_repository.dart';
 import 'package:blog_app/feature/home/domain/usecases/get_all_blog.dart';
+import 'package:blog_app/feature/home/domain/usecases/get_blog.dart';
 import 'package:blog_app/feature/home/domain/usecases/upload_blog.dart';
-import 'package:blog_app/feature/home/presentation/bloc/blog_bloc.dart';
+import 'package:blog_app/feature/home/presentation/blog_bloc/blog_bloc.dart';
+import 'package:blog_app/feature/home/presentation/home_bloc/allblog_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -83,11 +86,24 @@ void _initblog() {
       ),
     )
     ..registerFactory<GetAllBlog>(
-        () => GetAllBlog(repository: serviceLocater<BlogRepository>()))
+      () => GetAllBlog(
+        repository: serviceLocater<BlogRepository>(),
+      ),
+    )
+    ..registerFactory(
+      () => GetBlog(
+        repository: serviceLocater<BlogRepository>(),
+      ),
+    )
     ..registerSingleton(
-      BlogBloc(
+      AllBlogBloc(
         serviceLocater<UploadBlog>(),
         serviceLocater<GetAllBlog>(),
+      ),
+    )
+    ..registerFactory(
+      () => BlogBloc(
+        serviceLocater<GetBlog>(),
       ),
     );
 }
